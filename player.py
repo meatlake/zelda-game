@@ -1,6 +1,4 @@
 import pygame
-from settings import *
-
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
@@ -10,6 +8,7 @@ class Player(pygame.sprite.Sprite):
 
         # player movement
         self.direction = pygame.math.Vector2()
+        self.speed = 5
 
     # keyboard input
     def input(self):
@@ -28,5 +27,9 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
+    def move(self, speed):
+        self.rect.center += self.direction * speed
+
     def update(self):
-        self.visible_sprites.update(self.display_surface)
+        self.input()
+        self.move(self.speed)
