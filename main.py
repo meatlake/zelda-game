@@ -1,43 +1,31 @@
-import sys
-v=sys.version
+import pygame, sys
+from settings import *
+from level import Level
 
-print(v)
+class Game:
+    def __init__(self):
 
-from tkinter import *
-import tkinter.filedialog
+        # general setup
+        pygame.init()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGTH))
+        pygame.display.set_caption("Zelda")
+        self.clock = pygame.time.Clock()
 
-root = Tk("Text Editor")
+        self.level = Level()
 
-text = Text(root)
-text.grid()
+    def run(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
-def save_as():
-    global text
-    t = text.get("1.0", "end-1c")
-    save_location = tkinter.filedialog.asksaveasfilename()
-    file1 = open(save_location, "w+")
-    file1.write(t)
-    file1.close()
+            self.screen.fill('black')
+            self.level.run()
+            pygame.display.update()
+            self.clock.tick(FPS)
 
-button = Button(root, text="Save", command=save_as)
-button.grid()
 
-def FontHelvetica():
-    global text
-    text.config(font="Helvetica")
-
-def FontCourier():
-    global text
-    text.config(font="Courier")
-
-font = Menubutton(root, text="Font")
-font.grid()
-font.menu = Menu(font, tearoff=0)
-font["menu"] = font.menu
-helvetica = IntVar()
-courier = IntVar()
-
-font.menu.add_checkbutton(label="Helvetica", variable=helvetica, command=FontHelvetica)
-font.menu.add_checkbutton(label="Courier", variable=courier, command=FontCourier)
-
-root.mainloop()
+if __name__ == '__main__':
+    game = Game()
+    game.run()
